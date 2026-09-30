@@ -29,12 +29,22 @@ public class Chamado {
     public Chamado(){}
 
     public Chamado(String solicitante, String dispositivo, String descricao) {
+        if (solicitante == null || solicitante.isBlank() ){
+            throw new IllegalArgumentException("O campo do solicitante não pode ser vazio");
+        }
+        if (descricao == null || descricao.isBlank()){
+            throw new IllegalArgumentException("O campo de descrição não pode ser vazio");
+        }
+        if (dispositivo == null || dispositivo.isBlank() ){
+            throw new IllegalArgumentException("O campo de dispositivo não pode ser vazio");
+        }
         this.solicitante = solicitante;
         this.dispositivo = dispositivo;
         this.descricao = descricao;
         this.status = StatusChamado.ABERTO;
         this.urgencia = UrgenciaChamado.NAO_CLASSIFICADA;
         this.dataAbertura = LocalDateTime.now();
+
     }
 
     public UUID getId() {
@@ -65,5 +75,30 @@ public class Chamado {
         return dataAbertura;
     }
 
+    public boolean iniciarAtendimento() {
+        if (status == StatusChamado.ABERTO) {
+            this.status = StatusChamado.EM_ATENDIMENTO;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean resolver() {
+        if (status == StatusChamado.EM_ATENDIMENTO) {
+            this.status = StatusChamado.RESOLVIDO;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean classificarUrgencia(UrgenciaChamado urgencia) {
+        if (urgencia != null
+                && status == StatusChamado.ABERTO
+                && urgencia != UrgenciaChamado.NAO_CLASSIFICADA) {
+            this.urgencia = urgencia;
+            return true;
+        }
+        return false;
+    }
 
 }
