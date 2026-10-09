@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.List;
+import java.util.UUID;
 
 @SpringBootApplication
 public class ChamadosApplication implements CommandLineRunner {
@@ -33,5 +34,10 @@ public class ChamadosApplication implements CommandLineRunner {
             System.out.println(lista.getStatus());
             System.out.println(lista.getSolicitante());
         }
+
+        Chamado inexistente = chamadoService.buscarPorId(UUID.randomUUID());
+
+        System.out.println(inexistente.getSolicitante());
+        System.out.println(chamado.getDispositivo());
     }
 }
